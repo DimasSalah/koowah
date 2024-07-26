@@ -1,6 +1,8 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
 import 'package:get/get.dart';
+import 'package:koowah/app/routes/app_pages.dart';
 import '../../../constant/constant.dart';
 import '../controllers/onboarding_controller.dart';
 
@@ -9,12 +11,13 @@ class OnboardingView extends GetView<OnboardingController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        width: double.infinity,
-        height: double.infinity,
+      resizeToAvoidBottomInset: false,
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            Gap(50),
             CarouselSlider(
               options: CarouselOptions(
                 viewportFraction: 1,
@@ -22,22 +25,52 @@ class OnboardingView extends GetView<OnboardingController> {
                 autoPlay: true,
                 autoPlayInterval: Duration(seconds: 3),
                 enlargeCenterPage: true,
+                onPageChanged: (index, reason) {
+                  controller.currentIndex.value = index;
+                },
               ),
               items: controller.slide.map((slide) {
                 return Builder(
                   builder: (BuildContext context) {
                     return Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
                         Image.asset(
-                          width: 200,
+                          width: Get.width * 0.6,
                           slide['image']!,
                         ),
-                        SizedBox(height: 20),
-                        Text(
-                          slide['text']!,
-                          style: TS.medium.copyWith(fontSize: 22),
-                          textAlign: TextAlign.center,
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: List.generate(
+                              controller.slide.length,
+                              (index) => Obx(
+                                    () => Container(
+                                      margin: const EdgeInsets.all(4),
+                                      width: 30,
+                                      height: 5,
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(10),
+                                        color: controller.currentIndex.value ==
+                                                index
+                                            ? CS.blue
+                                            : CS.whiteGrey,
+                                      ),
+                                    ),
+                                  )),
+                        ),
+                        Gap(20),
+                        ListTile(
+                          title: Text(
+                            slide['text']!,
+                            style: TS.medium.copyWith(fontSize: 24),
+                          ),
+                          subtitle: Text(
+                            slide['subtext']!,
+                            style: TS.regular.copyWith(
+                              fontSize: 16,
+                              color: CS.grey,
+                            ),
+                          ),
                         ),
                       ],
                     );
@@ -45,12 +78,22 @@ class OnboardingView extends GetView<OnboardingController> {
                 );
               }).toList(),
             ),
-            SizedBox(height: 20),
+            const Gap(20),
             ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: CS.blue,
+                minimumSize: Size(Get.width * 1, 60),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              ),
               onPressed: () {
-                Get.offAllNamed('/home');
+                Get.toNamed(Routes.SELECTOR);
               },
-              child: Text('Get Started'),
+              child: Text(
+                'Get Started',
+                style: TS.medium.copyWith(fontSize: 14, color: CS.white),
+              ),
             ),
           ],
         ),

@@ -1,11 +1,14 @@
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 
 class HomeController extends GetxController {
-  //TODO: Implement HomeController
+  RxString name = ''.obs;
+  final box = GetStorage();
 
   final count = 0.obs;
   @override
   void onInit() {
+    name.value = box.read('name') ?? '';
     super.onInit();
   }
 
