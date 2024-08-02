@@ -48,6 +48,8 @@ class RegisterView extends GetView<AuthController> {
                     const Gap(10),
                     CustomForm(
                         hintText: 'Nomor Whatsapp',
+                        validator: (phone) =>
+                            controller.validatePhoneNumber(phone),
                         onChanged: controller.changePhone,
                         icon: 'assets/icons/phone.svg'),
                     const Gap(10),

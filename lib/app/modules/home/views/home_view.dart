@@ -3,100 +3,173 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
 
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:koowah/app/constant/constant.dart';
+import 'package:koowah/app/modules/utils/currency_format.dart';
 
+import '../../../routes/app_pages.dart';
 import '../controllers/home_controller.dart';
+import 'components/card_product.dart';
 import 'components/header_bar.dart';
+import 'components/search_header.dart';
 
 class HomeView extends GetView<HomeController> {
-  const HomeView({Key? key}) : super(key: key);
+  const HomeView({super.key});
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Obx(
-                () => HeaderBar(
-                  name: controller.name.value, 
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Obx(
+                  () => HeaderBar(
+                    name: controller.name.value,
+                    onLogout: () {
+                      GetStorage().erase();
+                      controller.clearCart();
+                      Get.offAllNamed(Routes.SELECTOR);
+                    },
+                  ),
                 ),
-              ),
-              Container(
-                padding: const EdgeInsets.all(6),
-                decoration: BoxDecoration(
-                  color: CS.whiteGrey,
-                  borderRadius: BorderRadius.circular(80),
+                const Gap(20),
+                SearchHeader(
+                    onChanged: (value) => controller.filterProduct(value)),
+                const Gap(10),
+                SizedBox(
+                  width: double.infinity,
+                  height: 130,
+                  child: GetBuilder<HomeController>(builder: (controller) {
+                    return ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: controller.categories.length,
+                      itemBuilder: (context, index) {
+                        return CategoryItem(
+                          icon: controller.categories[index]['emoji']!,
+                          title: controller.categories[index]['title']!,
+                          color: controller.activeCategoryIndex.value == index
+                              ? CS.yellow
+                              : CS.whiteGrey,
+                          onTap: () {
+                            controller.changeCategory(index);
+                            controller.getAllProduct(
+                                filter: controller.categories[index]
+                                    ['function']);
+                          },
+                        );
+                      },
+                    );
+                  }),
                 ),
-                child: Column(
-                  children: [
-                    Container(
-                      width: 50,
-                      height: 50,
-                      decoration: const BoxDecoration(
-                        color: CS.grey,
-                        shape: BoxShape.circle,
-                      ),
+                const Gap(20),
+                Obx(() {
+                  if (controller.filteredProducts.isEmpty) {
+                    return Center(
                       child: Text(
-                        textAlign: TextAlign.center,
-                        '🔥',
-                        style: TS.semiBold.copyWith(fontSize: 30),
+                        'Produk tidak ditemukan',
+                        style: TS.regular.copyWith(fontSize: 17),
                       ),
-                    ),
-                    const Gap(14),
-                    Text('Semua ', style: TS.medium.copyWith(fontSize: 12)),
-                    const Gap(14)
-                  ],
+                    );
+                  } else {
+                    return GridView.builder(
+                      physics: const NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                        crossAxisSpacing: 10.0,
+                        mainAxisSpacing: 20.0,
+                        childAspectRatio: 0.6,
+                      ),
+                      itemCount: controller.filteredProducts.length,
+                      itemBuilder: (context, index) {
+                        return cardProduct(
+                          onTap: () =>
+                              Get.toNamed(Routes.DETAIL_PRODUCT, arguments: {
+                            'id': controller.filteredProducts[index].id,
+                            'description':
+                                controller.filteredProducts[index].description,
+                            'imageUrl':
+                                controller.filteredProducts[index].imageUrl,
+                            'title': controller.filteredProducts[index].title,
+                            'category':
+                                controller.filteredProducts[index].category,
+                            'address':
+                                controller.filteredProducts[index].address,
+                            'weight':
+                                controller.filteredProducts[index].quantity,
+                            'price': controller.filteredProducts[index].price,
+                            'phone': controller.filteredProducts[index].phone,
+                          }),
+                          title: controller.filteredProducts[index].title,
+                          url: controller.filteredProducts[index].imageUrl,
+                          weight: controller.filteredProducts[index].quantity,
+                          price: currencyFormatRp(
+                              controller.filteredProducts[index].price.toInt()),
+                        );
+                      },
+                    );
+                  }
+                }),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class CategoryItem extends StatelessWidget {
+  final String icon;
+  final String title;
+  final Color color;
+  final Function()? onTap;
+  const CategoryItem({
+    super.key,
+    required this.icon,
+    required this.title,
+    required this.color,
+    this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        margin: const EdgeInsets.only(right: 10),
+        width: 80,
+        padding: const EdgeInsets.all(6),
+        decoration: BoxDecoration(
+          color: color,
+          borderRadius: BorderRadius.circular(80),
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              width: 50,
+              height: 50,
+              decoration: const BoxDecoration(
+                color: CS.white,
+                shape: BoxShape.circle,
+              ),
+              child: Center(
+                child: Text(
+                  icon,
+                  style: TS.semiBold.copyWith(fontSize: 30),
+                  textAlign: TextAlign.center,
                 ),
               ),
-              Container(
-                padding: const EdgeInsets.all(16),
-                constraints: BoxConstraints(
-                  maxWidth: Get.width * 0.4,
-                ),
-                decoration: BoxDecoration(
-                  color: CS.whiteGrey.withOpacity(0.02),
-                  border: Border.all(color: CS.whiteGrey, width: 1.5),
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Image.asset(
-                      'assets/images/idea.png',
-                      width: 150,
-                    ),
-                    Text('Judul', style: TS.medium.copyWith(fontSize: 15)),
-                    const Gap(4),
-                    Text('Deskripsi', style: TS.regular.copyWith(fontSize: 13)),
-                    const Gap(10),
-                    Row(
-                      children: [
-                        Text('Rp 10rb',
-                            style: TS.semiBold.copyWith(fontSize: 15)),
-                        Spacer(),
-                        Container(
-                            alignment: Alignment.bottomRight,
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 10, vertical: 10),
-                            decoration: BoxDecoration(
-                              color: CS.blue,
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: SvgPicture.asset(
-                              'assets/icons/Bag.svg',
-                              width: 20,
-                            )),
-                      ],
-                    ),
-                  ],
-                ),
-              )
-            ],
-          ),
+            ),
+            const Gap(14),
+            Text(title, style: TS.medium.copyWith(fontSize: 12)),
+            const Gap(14),
+          ],
         ),
       ),
     );

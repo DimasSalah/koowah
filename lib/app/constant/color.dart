@@ -7,4 +7,5 @@ class CS {
   static const Color whiteGrey = Color(0xFFEAEAEA);
   static const Color blue = Color(0xFF5252E4);
   static const Color lavender = Color(0xFFc1baf2);
+  static const Color yellow = Color(0xFFFED660);
 }

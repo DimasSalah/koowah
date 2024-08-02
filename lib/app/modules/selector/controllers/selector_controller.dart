@@ -7,4 +7,11 @@ class SelectorController extends GetxController {
     print('SelectorController onInit');
     super.onInit();
   }
+
+  RxInt selectedIndex = 0.obs;
+  RxBool selectedTab = true.obs;
+
+  void changeTabIndex(int index) {
+    selectedIndex.value = index;
+  }
 }

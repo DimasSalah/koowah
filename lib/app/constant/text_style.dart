@@ -10,7 +10,7 @@ class TS {
 
   static final TextStyle medium = GoogleFonts.poppins(
     textStyle: TextStyle(
-      fontWeight: FontWeight.w500,
+      fontWeight: FontWeight.w600,
       color: Colors.black,
     ),
   );

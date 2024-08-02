@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:koowah/app/modules/admin/add_product/data/services/product_services.dart';
 
 import '../../../constant/constant.dart';
@@ -15,8 +16,36 @@ class AdminView extends GetView<AdminController> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Text('AdminView'),
+          title: Text('Admin', style: TS.medium),
           centerTitle: true,
+          actions: [
+            IconButton(
+              onPressed: () {
+                Get.dialog(
+                  AlertDialog(
+                    title: const Text('Logout'),
+                    content: const Text('Apakah anda yakin ingin keluar?'),
+                    actions: [
+                      TextButton(
+                        onPressed: () {
+                          GetStorage().erase();
+                          Get.offAllNamed(Routes.SELECTOR);
+                        },
+                        child: const Text('Ya'),
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          Get.back();
+                        },
+                        child: const Text('Tidak'),
+                      ),
+                    ],
+                  ),
+                );
+              },
+              icon: const Icon(Icons.logout_sharp),
+            ),
+          ],
         ),
         body: SingleChildScrollView(
           child: Padding(
@@ -57,8 +86,10 @@ class AdminView extends GetView<AdminController> {
                                           arguments: {
                                             'id': controller.adminId.value,
                                             'name': controller.adminName.value,
-                                            'address': controller.adminAddress.value,
-                                            'phone': controller.adminPhone.toString(),
+                                            'address':
+                                                controller.adminAddress.value,
+                                            'phone': controller.adminPhone
+                                                .toString(),
                                           });
                                     },
                                     child: Container(
@@ -105,19 +136,21 @@ class AdminView extends GetView<AdminController> {
                 Container(
                   padding: const EdgeInsets.all(10),
                   decoration: BoxDecoration(
-                    color: CS.whiteGrey,
+                    color: CS.blue,
                     borderRadius: BorderRadius.circular(10),
-                    border:
-                        Border.all(color: CS.grey.withOpacity(0.5), width: 1.5),
+                    border: Border.all(
+                        color: CS.lavender.withOpacity(0.5), width: 2),
                   ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text('produk anda',
-                          style: TS.regular.copyWith(fontSize: 15)),
+                      Text('Produk anda',
+                          style: TS.medium
+                              .copyWith(fontSize: 15, color: CS.white)),
                       Obx(
                         () => Text(controller.productsList.length.toString(),
-                            style: TS.medium.copyWith(fontSize: 15)),
+                            style: TS.medium
+                                .copyWith(fontSize: 15, color: CS.white)),
                       )
                     ],
                   ),
@@ -186,7 +219,7 @@ class AdminView extends GetView<AdminController> {
                                             .productsList[index].imageUrl);
                                     controller.productsList.removeAt(index);
                                   },
-                                  child: Icon(
+                                  child: const Icon(
                                     Icons.delete,
                                     size: 30,
                                   ),
@@ -203,20 +236,23 @@ class AdminView extends GetView<AdminController> {
             ),
           ),
         ),
-        floatingActionButton: FloatingActionButton(
-          backgroundColor: CS.blue,
-          elevation: 0,
-          onPressed: () {
-            Get.toNamed(Routes.ADD_PRODUCT, arguments: {
-              'id': controller.adminId.value.toString(),
-              'adminAddress': controller.adminAddress,
-              'adminPhone': controller.adminPhone.toString(),
-            });
-          },
-          child: const Icon(
-            Icons.add_circle,
-            color: CS.white,
-            size: 40,
+        floatingActionButton: Padding(
+          padding: const EdgeInsets.only(bottom: 25, right: 15),
+          child: FloatingActionButton(
+            backgroundColor: CS.blue,
+            elevation: 0,
+            onPressed: () {
+              Get.toNamed(Routes.ADD_PRODUCT, arguments: {
+                'id': controller.adminId.value.toString(),
+                'adminAddress': controller.adminAddress,
+                'adminPhone': controller.adminPhone.toString(),
+              });
+            },
+            child: const Icon(
+              Icons.add_circle,
+              color: CS.white,
+              size: 40,
+            ),
           ),
         ));
   }

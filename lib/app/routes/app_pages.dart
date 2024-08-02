@@ -6,8 +6,14 @@ import '../modules/admin/bindings/admin_binding.dart';
 import '../modules/admin/profile_admin/bindings/profile_admin_binding.dart';
 import '../modules/admin/profile_admin/views/profile_admin_view.dart';
 import '../modules/admin/views/admin_view.dart';
+import '../modules/chart/bindings/chart_binding.dart';
+import '../modules/chart/views/chart_view.dart';
 import '../modules/home/bindings/home_binding.dart';
+import '../modules/home/detail_product/bindings/detail_product_binding.dart';
+import '../modules/home/detail_product/views/detail_product_view.dart';
 import '../modules/home/views/home_view.dart';
+import '../modules/navigation/bindings/navigation_binding.dart';
+import '../modules/navigation/views/navigation_view.dart';
 import '../modules/onboarding/bindings/onboarding_binding.dart';
 import '../modules/onboarding/views/onboarding_view.dart';
 import '../modules/profile/bindings/profile_binding.dart';
@@ -33,21 +39,33 @@ class AppPages {
       name: _Paths.HOME,
       page: () => const HomeView(),
       binding: HomeBinding(),
+      transition: Transition.fadeIn,
+      children: [
+        GetPage(
+          name: _Paths.DETAIL_PRODUCT,
+          page: () => const DetailProductView(),
+          binding: DetailProductBinding(),
+          transition: Transition.native,
+        ),
+      ],
     ),
     GetPage(
         name: _Paths.ONBOARDING,
         page: () => const OnboardingView(),
         binding: OnboardingBinding(),
+        transition: Transition.fadeIn,
         children: []),
     GetPage(
       name: _Paths.SELECTOR,
       page: () => const SelectorView(),
       binding: SelectorBinding(),
+      transition: Transition.fadeIn,
       children: [
         GetPage(
           name: _Paths.REGISTER,
           page: () => const RegisterView(),
           binding: AuthBinding(),
+          transition: Transition.fadeIn,
         ),
         GetPage(
           name: _Paths.LOGIN,
@@ -70,6 +88,7 @@ class AppPages {
       name: _Paths.SPLASH,
       page: () => const SplashView(),
       binding: SplashBinding(),
+      transition: Transition.fadeIn,
     ),
     GetPage(
       name: _Paths.ADMIN,
@@ -87,6 +106,18 @@ class AppPages {
           binding: ProfileAdminBinding(),
         ),
       ],
+    ),
+    GetPage(
+      name: _Paths.NAVIGATION,
+      page: () => const NavigationView(),
+      binding: NavigationBinding(),
+      transition: Transition.fadeIn,
+    ),
+    GetPage(
+      name: _Paths.CHART,
+      page: () => const ChartView(),
+      binding: ChartBinding(),
+      transition: Transition.fadeIn,
     ),
   ];
 }

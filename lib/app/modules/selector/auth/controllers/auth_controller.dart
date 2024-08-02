@@ -59,6 +59,19 @@ class AuthController extends GetxController {
     return null;
   }
 
+  validatePhoneNumber(String? phone) {
+    if (phone == null || phone.isEmpty) {
+      return 'Nomor ponsel tidak boleh kosong';
+    }
+    if (phone.startsWith('0')) {
+      return 'kamu harus mengganti 0 dengan 62';
+    }
+    if (!phone.startsWith('62')) {
+      return 'Nomor ponsel tidak valid, harus dimulai dengan 62';
+    }
+    return null;
+  }
+
   Future<void> createAdmin() async {
     isValidate.value = true;
     if (formKey.currentState!.validate()) {

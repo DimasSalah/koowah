@@ -6,7 +6,6 @@ import 'package:get_storage/get_storage.dart';
 import 'package:koowah/app/data/endpoint.dart';
 import 'package:koowah/app/modules/selector/auth/data/model/admin_model.dart';
 import 'package:logger/logger.dart';
-
 import '../../../../../routes/app_pages.dart';
 
 class AuthServices extends GetxService {
@@ -71,7 +70,7 @@ class AuthServices extends GetxService {
     }
   }
 
-  Future<AdminModel> getAdmin(String id) async {
+  Future<AdminModel>  getAdmin(String id) async {
     try {
       final response = await dio.get(
         '$baseUrl/rest/v1/admin?id=eq.$id',
