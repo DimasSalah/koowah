@@ -24,13 +24,18 @@ class LoginView extends GetView<AuthController> {
           key: controller.formKey,
           child: Column(
             children: [
-              Text('Ayo Masuk',
+              Image.asset(
+                'assets/images/splash.jpg',
+                width: Get.width * 0.35,
+              ),
+              // const Gap(20),
+              Text('Admin',
                   style: TS.medium.copyWith(fontSize: 26, color: CS.black)),
               Text(
                 'ayo masuk dan mulai berjualan',
                 style: TS.regular.copyWith(color: CS.grey),
               ),
-              Gap(20),
+              const Gap(30),
               CustomForm(
                   hintText: 'Email',
                   validator: (email) => controller.validateEmail(email),
@@ -49,7 +54,7 @@ class LoginView extends GetView<AuthController> {
                       controller.obsecureText.value =
                           !controller.obsecureText.value;
                     },
-                    child: Container(
+                    child: SizedBox(
                       width: 10,
                       height: 20,
                       child: SvgPicture.asset(
@@ -61,7 +66,7 @@ class LoginView extends GetView<AuthController> {
                   ),
                 ),
               ),
-              const Gap(10),
+              const Gap(20),
               MainButton(
                 onPressed: () {
                   controller.login();

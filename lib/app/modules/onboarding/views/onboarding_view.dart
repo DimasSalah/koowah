@@ -33,7 +33,7 @@ class OnboardingView extends GetView<OnboardingController> {
                 return Builder(
                   builder: (BuildContext context) {
                     return Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         Image.asset(
                           width: Get.width * 0.6,
@@ -59,19 +59,24 @@ class OnboardingView extends GetView<OnboardingController> {
                                   )),
                         ),
                         Gap(20),
-                        ListTile(
-                          title: Text(
-                            slide['text']!,
-                            style: TS.medium.copyWith(fontSize: 24),
-                          ),
-                          subtitle: Text(
-                            slide['subtext']!,
-                            style: TS.regular.copyWith(
-                              fontSize: 16,
-                              color: CS.grey,
+                        Column(
+                          children: [
+                            Text(
+                              slide['text']!,
+                              style: TS.bold.copyWith(fontSize: 24),
+                              textAlign: TextAlign.center,
                             ),
-                          ),
-                        ),
+                            Gap(7),
+                            Text(
+                              slide['subtext']!,
+                              textAlign: TextAlign.center,
+                              style: TS.regular.copyWith(
+                                fontSize: 16,
+                                color: CS.grey,
+                              ),
+                            ),
+                          ],
+                        )
                       ],
                     );
                   },
@@ -88,10 +93,11 @@ class OnboardingView extends GetView<OnboardingController> {
                 ),
               ),
               onPressed: () {
-                Get.toNamed(Routes.SELECTOR);
+                Get.toNamed(Routes.PROFILE);
+                // Get.toNamed(Routes.SELECTOR);
               },
               child: Text(
-                'Get Started',
+                'Ayo Mulai',
                 style: TS.medium.copyWith(fontSize: 14, color: CS.white),
               ),
             ),

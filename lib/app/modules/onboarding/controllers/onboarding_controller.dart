@@ -5,19 +5,21 @@ class OnboardingController extends GetxController {
   final List<Map<String, String>> slide = [
     {
       'image': 'assets/icons/intro1.png',
-      'text': 'Welcome to our Grocery App!',
-      'subtext': 'Get your groceries in as fast as one hour!'
+      'text': 'Ayo Jelajahi KooWah!',
+      'subtext':
+          'Temukan berbagai pilihan kopi terbaik dan buah-buahan segar langsung dari kebun!'
     },
     {
       'image': 'assets/icons/intro2.png',
-      'text': 'Get fresh groceries delivered to your door.',
+      'text': 'Kopi Berkualitas Tinggi',
       'subtext':
-          'We deliver fresh groceries to your door in as fast as one hour.'
+          'Nikmati cita rasa kopi premium yang diolah dengan penuh keahlian.'
     },
     {
       'image': 'assets/icons/intro3.png',
-      'text': 'Enjoy special offers and discounts!',
-      'subtext': 'Get special offers and discounts on your favorite products.'
+      'text': 'Buah-buahan Segar',
+      'subtext':
+          'Dapatkan buah-buahan segar dan sehat setiap hari untuk keluarga Anda.'
     },
   ];
 }

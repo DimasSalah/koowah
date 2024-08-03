@@ -19,13 +19,10 @@ class ProfileView extends GetView<ProfileController> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: Text(
-          'Lengkapi Profil',
-          style: TS.medium.copyWith(fontSize: 20, color: CS.black),
-        ),
         leading: IconButton(
           icon: SvgPicture.asset(
             'assets/icons/back.svg',
+            width: 24,
           ),
           onPressed: () {
             Get.back();
@@ -36,26 +33,26 @@ class ProfileView extends GetView<ProfileController> {
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            const Gap(20),
             Center(
-              child: Container(
-                decoration: const BoxDecoration(
-                  color: CS.whiteGrey,
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(100),
-                    topRight: Radius.circular(100),
-                    bottomLeft: Radius.circular(10),
-                    bottomRight: Radius.circular(10),
-                  ),
-                ),
-                width: Get.width * 0.6,
-                height: Get.width * 0.7,
-                child: Obx(
-                  () => SvgPicture.network(
-                      'https://api.dicebear.com/9.x/adventurer/svg?seed=${controller.name.value}'),
-                ),
+              child: Text(
+                'Buat Profil Anda',
+                style: TS.regular.copyWith(fontSize: 26),
+                textAlign: TextAlign.center,
+              ),
+            ),
+            const Gap(20),
+            Container(
+              decoration: const BoxDecoration(
+                color: CS.whiteGrey,
+                shape: BoxShape.circle,
+              ),
+              width: Get.width * 0.4,
+              height: Get.width * 0.4,
+              child: Obx(
+                () => SvgPicture.network(
+                    'https://api.dicebear.com/9.x/adventurer/svg?seed=${controller.name.value}'),
               ),
             ),
             const Gap(20),
@@ -68,13 +65,16 @@ class ProfileView extends GetView<ProfileController> {
                 hintText: 'Alamat',
                 onChanged: controller.changeAddress,
                 icon: 'assets/icons/location.svg'),
-            const Gap(20),
-            Obx(
-              () => controller.cities.isEmpty
-                  ? const Center(child: CircularProgressIndicator())
-                  : CityDropdown(),
+            const Gap(15),
+            Container(
+              alignment: Alignment.centerLeft,
+              child: Obx(
+                () => controller.cities.isEmpty
+                    ? const Center(child: CircularProgressIndicator())
+                    : CityDropdown(),
+              ),
             ),
-            const Gap(20),
+            const Spacer(),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
                 backgroundColor: CS.blue,
@@ -91,6 +91,14 @@ class ProfileView extends GetView<ProfileController> {
                 style: TS.medium.copyWith(fontSize: 14, color: CS.white),
               ),
             ),
+            TextButton(
+                onPressed: () {
+                  Get.toNamed(Routes.LOGIN);
+                },
+                child: Text(
+                  'Masuk sebagai penjual',
+                  style: TS.regular.copyWith(fontSize: 14, color: CS.grey),
+                )),
           ],
         ),
       ),

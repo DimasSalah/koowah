@@ -14,7 +14,7 @@ class ProfileAdminView extends GetView<ProfileAdminController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('ProfileAdminView'),
+        title: const Text('Pengaturan Profil'),
         centerTitle: true,
       ),
       body: SingleChildScrollView(
