@@ -4,6 +4,7 @@ import 'package:gap/gap.dart';
 
 import 'package:get/get.dart';
 import 'package:koowah/app/modules/utils/global_component/main_button.dart';
+import 'package:koowah/app/modules/utils/weight_format.dart';
 
 import '../../../../constant/constant.dart';
 import '../../../../local/product.dart';
@@ -35,9 +36,23 @@ class DetailProductView extends GetView<DetailProductController> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  controller.title,
-                  style: TS.medium.copyWith(fontSize: 24),
+                Row(
+                  children: [
+                    Text(
+                      controller.title,
+                      style: TS.medium.copyWith(fontSize: 24),
+                    ),
+                    const Spacer(),
+                    GestureDetector(
+                      onTap: () {
+                        controller.directMessage(controller.phone);
+                      },
+                      child: SvgPicture.asset(
+                        'assets/icons/whatsapp.svg',
+                        width: 30,
+                      ),
+                    ),
+                  ],
                 ),
                 const Gap(5),
                 Text(
@@ -74,7 +89,7 @@ class DetailProductView extends GetView<DetailProductController> {
                     ),
                     const Gap(5),
                     Text(
-                      controller.weight,
+                      formatWeight(int.parse(controller.weight)),
                       style: TS.regular.copyWith(fontSize: 14, color: CS.grey),
                     ),
                   ],
@@ -160,6 +175,8 @@ class DetailProductView extends GetView<DetailProductController> {
                     imageUrl: controller.imageUrl,
                     phone: controller.phone,
                     address: controller.address,
+                    cityId: controller.cityId,
+                    weight: controller.weight,
                   );
                   controller.addProduct(newProduct);
                   Get.snackbar(

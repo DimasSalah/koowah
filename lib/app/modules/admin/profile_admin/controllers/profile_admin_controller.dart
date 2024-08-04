@@ -1,16 +1,24 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
 import '../../../../routes/app_pages.dart';
+import '../../../profile/data/model/city_model.dart';
 import '../../../selector/auth/data/services/auth_services.dart';
 
 class ProfileAdminController extends GetxController {
-  //TODO: Implement ProfileAdminController
   RxString name = ''.obs;
+  
+  var cities = <CityModel>[].obs;
+  var filteredCities = <CityModel>[].obs;
+  var selectedCityId = 0.obs;
+  var selectedCityName = ''.obs;
+  
   final TextEditingController nameController = TextEditingController();
   final TextEditingController addressController = TextEditingController();
   final TextEditingController phoneController = TextEditingController();
-
   final AuthServices authServices = AuthServices();
 
   late String id;
@@ -32,9 +40,6 @@ class ProfileAdminController extends GetxController {
   }
 
   void updateProfileInfo() {
-    print(nameController.text);
-    print(addressController.text);
-    print(phoneController.text);
     authServices.updateProfile(
         id,
         name.value,
@@ -57,5 +62,36 @@ class ProfileAdminController extends GetxController {
     phoneController.text = adminPhone;
     name.value = adminName;
     super.onInit();
+  }
+
+
+  @override
+  void onReady() {
+    fetchCities();
+    super.onReady();
+  }
+
+  Future<void> fetchCities() async {
+    final String response =
+        await rootBundle.loadString('assets/json/all_city.json');
+    final data = json.decode(response);
+    cities.value = (data['rajaongkir']['results'] as List)
+        .map((city) => CityModel.fromJson(city))
+        .toList();
+    filteredCities.value = cities; // Initialize with all cities
+    Future.delayed(Duration(seconds: 3), () {
+      update();
+    });
+  }
+
+  void searchCity(String query) {
+    if (query.isEmpty) {
+      filteredCities.value = cities;
+    } else {
+      filteredCities.value = cities
+          .where((city) =>
+              city.cityName.toLowerCase().contains(query.toLowerCase()))
+          .toList();
+    }
   }
 }

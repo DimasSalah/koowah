@@ -14,6 +14,7 @@ class AdminController extends GetxController {
   RxString adminName = ''.obs;
   RxString adminAddress = ''.obs;
   RxInt adminPhone = 0.obs;
+  RxInt adminCity = 0.obs;
   RxString image = 'https://api.multiavatar.com/996897.59941f9f699b.svg'.obs;
   RxList<ProductModel> productsList = <ProductModel>[].obs;
 
@@ -27,6 +28,8 @@ class AdminController extends GetxController {
       adminAddress.value = value.address;
       adminPhone.value = value.phone;
       image.value = value.image;
+      adminCity.value = value.cityId;
+      print(adminCity);
     });
   }
 

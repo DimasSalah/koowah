@@ -92,13 +92,22 @@ class ProfileView extends GetView<ProfileController> {
               ),
             ),
             TextButton(
-                onPressed: () {
-                  Get.toNamed(Routes.LOGIN);
-                },
-                child: Text(
-                  'Masuk sebagai penjual',
-                  style: TS.regular.copyWith(fontSize: 14, color: CS.grey),
-                )),
+              onPressed: () {
+                Get.toNamed(Routes.LOGIN);
+              },
+              child: RichText(
+                text: TextSpan(
+                  text: 'Masuk sebagai',
+                  style: TS.regular.copyWith(fontSize: 14, color: CS.black),
+                  children: [
+                    TextSpan(
+                      text: ' penjual',
+                      style: TS.medium.copyWith(fontSize: 14, color: CS.blue),
+                    )
+                  ],
+                ),
+              ),
+            ),
           ],
         ),
       ),

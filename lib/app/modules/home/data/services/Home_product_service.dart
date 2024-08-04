@@ -8,6 +8,10 @@ import '../../../../data/endpoint.dart';
 class HomeProductService extends GetxService {
   final dio = Dio();
   final logger = Logger();
+  final baseUrl = EnvConstants.baseUrl;
+  final apiKey = EnvConstants.apiKey;
+  final apiRJO = EnvConstants.apiRJO;
+
 
   Future<List<ProductModel>> geAllProduct({
     String? filter,

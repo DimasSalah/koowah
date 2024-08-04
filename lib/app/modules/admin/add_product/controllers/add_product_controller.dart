@@ -1,10 +1,13 @@
 import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:koowah/app/modules/admin/add_product/data/services/product_services.dart';
+import 'package:koowah/app/modules/utils/global_component/loading_material.dart';
 import 'package:koowah/app/routes/app_pages.dart';
 
+import '../../../../constant/constant.dart';
 import '../../../utils/random_string.dart';
 
 class AddProductController extends GetxController {
@@ -20,6 +23,7 @@ class AddProductController extends GetxController {
   late String id;
   late RxString adminAddress;
   late String adminPhone;
+  late int adminCity;
   final ProductServices productServices = ProductServices();
 
   RxInt adminId = 0.obs;
@@ -72,18 +76,42 @@ class AddProductController extends GetxController {
   }
 
   Future<void> addProduct() async {
-    await productServices.addProduct(
-      title: productName.value,
-      price: price.value,
-      weight: weight.value,
-      description: description.value,
-      imageUrl: imageUrl.value,
-      category: category.value,
-      adminId: id,
-      address: adminAddress.value,
-      phone: int.parse(adminPhone),
+    Get.dialog(
+      AlertDialog(
+        backgroundColor: CS.white,
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const CircularProgressIndicator(),
+            const SizedBox(height: 10),
+            Text('Tungu Sebentar',
+                style: TS.regular.copyWith(fontSize: 13, color: CS.black)),
+          ],
+        ),
+      ),
     );
-    Get.offAllNamed(Routes.ADMIN);
+    try {
+      await productServices.addProduct(
+        title: productName.value,
+        description: description.value,
+        price: price.value,
+        address: adminAddress.value,
+        adminId: id,
+        weight: weight.value,
+        phone: int.parse(adminPhone),
+        imageUrl: imageUrl.value,
+        category: category.value,
+        cityId: adminCity,
+      );
+      Get.offAllNamed(Routes.ADMIN);
+    } catch (e) {
+      Get.snackbar(
+        'Error',
+        'Terjadi kesalahan saat menambahkan produk',
+        snackPosition: SnackPosition.BOTTOM,
+      );
+      Get.back();
+    }
   }
 
   @override
@@ -92,6 +120,7 @@ class AddProductController extends GetxController {
     id = arguments['id'];
     adminAddress = arguments['adminAddress'];
     adminPhone = arguments['adminPhone'];
+    adminCity = arguments['cityId'];
     super.onInit();
   }
 }

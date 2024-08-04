@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
-
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:koowah/app/constant/constant.dart';
 import 'package:koowah/app/modules/utils/currency_format.dart';
-
+import 'package:koowah/app/modules/utils/weight_format.dart';
 import '../../../routes/app_pages.dart';
 import '../controllers/home_controller.dart';
 import 'components/card_product.dart';
@@ -31,7 +29,7 @@ class HomeView extends GetView<HomeController> {
                     onLogout: () {
                       GetStorage().erase();
                       controller.clearCart();
-                      Get.offAllNamed(Routes.SELECTOR);
+                      Get.offAllNamed(Routes.PROFILE);
                     },
                   ),
                 ),
@@ -103,10 +101,12 @@ class HomeView extends GetView<HomeController> {
                                 controller.filteredProducts[index].quantity,
                             'price': controller.filteredProducts[index].price,
                             'phone': controller.filteredProducts[index].phone,
+                            'cityId': controller.filteredProducts[index].cityId,
                           }),
                           title: controller.filteredProducts[index].title,
                           url: controller.filteredProducts[index].imageUrl,
-                          weight: controller.filteredProducts[index].quantity,
+                          weight: formatWeight(int.parse(
+                              controller.filteredProducts[index].quantity)),
                           price: currencyFormatRp(
                               controller.filteredProducts[index].price.toInt()),
                         );

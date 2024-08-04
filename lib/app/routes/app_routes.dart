@@ -17,6 +17,7 @@ abstract class Routes {
   static const NAVIGATION = _Paths.NAVIGATION;
   static const CHART = _Paths.CHART;
   static const DETAIL_PRODUCT = _Paths.HOME + _Paths.DETAIL_PRODUCT;
+  static const CHECKOUT = _Paths.CHART + _Paths.CHECKOUT;
 }
 
 abstract class _Paths {
@@ -35,4 +36,5 @@ abstract class _Paths {
   static const NAVIGATION = '/navigation';
   static const CHART = '/chart';
   static const DETAIL_PRODUCT = '/detail-product';
+  static const CHECKOUT = '/checkout';
 }

@@ -4,6 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:koowah/app/modules/admin/add_product/data/services/product_services.dart';
+import 'package:koowah/app/modules/utils/weight_format.dart';
 
 import '../../../constant/constant.dart';
 import '../../../routes/app_pages.dart';
@@ -29,7 +30,7 @@ class AdminView extends GetView<AdminController> {
                       TextButton(
                         onPressed: () {
                           GetStorage().erase();
-                          Get.offAllNamed(Routes.SELECTOR);
+                          Get.offAllNamed(Routes.PROFILE);
                         },
                         child: const Text('Ya'),
                       ),
@@ -43,9 +44,45 @@ class AdminView extends GetView<AdminController> {
                   ),
                 );
               },
-              icon: const Icon(Icons.logout_sharp),
+              icon: SvgPicture.asset(
+                'assets/icons/logout.svg',
+              ),
             ),
           ],
+        ),
+        drawer: Drawer(
+          child: ListView(
+            padding: EdgeInsets.zero,
+            children: <Widget>[
+              DrawerHeader(
+                decoration: const BoxDecoration(
+                  color: CS.blue,
+                ),
+                child: Text(
+                  'Admin Menu',
+                  style: TS.medium.copyWith(fontSize: 24, color: CS.white),
+                ),
+              ),
+              ListTile(
+                leading: const Icon(Icons.person_add_alt),
+                title: Text(
+                  'Tambah Admin',
+                  style: TS.regular.copyWith(fontSize: 14),
+                ),
+                onTap: () {
+                  Get.toNamed(Routes.REGISTER);
+                },
+              ),
+              // ListTile(
+              //   leading: const Icon(Icons.person),
+              //   title: const Text('Profile'),
+              //   onTap: () {
+              //     // Handle Profile tap
+              //     Get.toNamed(Routes.PROFILE);
+              //   },
+              // ),
+            ],
+          ),
         ),
         body: SingleChildScrollView(
           child: Padding(
@@ -100,7 +137,7 @@ class AdminView extends GetView<AdminController> {
                                         border: Border.all(
                                             color: CS.grey, width: 1.5),
                                       ),
-                                      child: Icon(Icons.edit,
+                                      child: const Icon(Icons.edit,
                                           color: CS.grey, size: 20),
                                     ),
                                   ),
@@ -207,7 +244,8 @@ class AdminView extends GetView<AdminController> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Text(
-                                  controller.productsList[index].quantity,
+                                  formatWeight(int.parse(
+                                      controller.productsList[index].quantity)),
                                   style: TS.regular.copyWith(fontSize: 12),
                                 ),
                                 GestureDetector(
@@ -246,6 +284,7 @@ class AdminView extends GetView<AdminController> {
                 'id': controller.adminId.value.toString(),
                 'adminAddress': controller.adminAddress,
                 'adminPhone': controller.adminPhone.toString(),
+                'cityId': controller.adminCity.value
               });
             },
             child: const Icon(

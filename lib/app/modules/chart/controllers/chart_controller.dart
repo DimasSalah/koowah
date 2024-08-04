@@ -34,20 +34,5 @@ class ChartController extends GetxController {
   //   }
   // }
 
-  void launchWhatsAppUri(String phone, String title, String address,
-      String price, String order) async {
-    final message = 'Halo,\n\n'
-        'Saya tertarik dengan produk Anda yang berjudul *$title*.\n'
-        'Alamat pengiriman saya adalah:\n'
-        '$address\n\n'
-        'Harga total produk $price dengan jumlah $order.\n\n'
-        'Apakah Stok masih tersedia?\n\n'
-        'Terima kasih!';
 
-    final link = WhatsAppUnilink(
-      phoneNumber: phone,
-      text: message,
-    );
-    await launchUrlString(link.toString());
-  }
 }

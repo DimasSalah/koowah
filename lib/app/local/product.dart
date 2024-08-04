@@ -22,14 +22,22 @@ class Product extends HiveObject {
   @HiveField(5)
   final String address;
 
+  @HiveField(6)
+  final int cityId;
+
+  @HiveField(7)
+  final String weight;
+
   // Tambahkan field phone
 
-  Product(
-      {required this.title,
-      required this.price,
-      required this.countOrder,
-      required this.imageUrl,
-      required this.phone,
-      required this.address // Tambahkan parameter phone
-      });
+  Product({
+    required this.title,
+    required this.price,
+    required this.countOrder,
+    required this.imageUrl,
+    required this.phone,
+    required this.address,
+    required this.cityId,
+    required this.weight,
+  });
 }

@@ -1,9 +1,13 @@
+import 'dart:convert';
+
+import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:koowah/app/modules/selector/auth/data/services/auth_services.dart';
 
 import '../../../../routes/app_pages.dart';
+import '../../../profile/data/model/city_model.dart';
 
 class AuthController extends GetxController {
   final AuthServices authServices = AuthServices();
@@ -17,6 +21,11 @@ class AuthController extends GetxController {
   RxBool isLoading = false.obs;
   RxBool obsecureText = true.obs;
   RxBool isValidate = false.obs;
+
+  var cities = <CityModel>[].obs;
+  var filteredCities = <CityModel>[].obs;
+  var selectedCityId = 0.obs;
+  var selectedCityName = ''.obs;
 
   void changeName(String value) {
     name.value = value;
@@ -74,7 +83,7 @@ class AuthController extends GetxController {
 
   Future<void> createAdmin() async {
     isValidate.value = true;
-    if (formKey.currentState!.validate()) {
+    if (formKey.currentState!.validate() && selectedCityId.value != 0) {
       isLoading.value = true;
       try {
         final response = await authServices.signIn(email.value, password.value);
@@ -85,9 +94,10 @@ class AuthController extends GetxController {
             name.value,
             address.value,
             int.parse(phone.value),
-            'https://api.dicebear.com/9.x/miniavs/svg?seed=$name');
+            'https://api.dicebear.com/9.x/miniavs/svg?seed=$name',
+            selectedCityId.value);
         isLoading.value = false;
-        Get.offAllNamed(Routes.ADMIN);
+        Get.offAllNamed(Routes.LOGIN);
       } catch (e) {
         Get.snackbar('Error', e.toString());
         isLoading.value = false;
@@ -99,5 +109,32 @@ class AuthController extends GetxController {
 
   Future<void> login() async {
     await authServices.loginAuth(email.value, password.value);
+  }
+
+  @override
+  void onReady() {
+    fetchCities();
+    super.onReady();
+  }
+
+  Future<void> fetchCities() async {
+    final String response =
+        await rootBundle.loadString('assets/json/all_city.json');
+    final data = json.decode(response);
+    cities.value = (data['rajaongkir']['results'] as List)
+        .map((city) => CityModel.fromJson(city))
+        .toList();
+    filteredCities.value = cities;
+  }
+
+  void searchCity(String query) {
+    if (query.isEmpty) {
+      filteredCities.value = cities;
+    } else {
+      filteredCities.value = cities
+          .where((city) =>
+              city.cityName.toLowerCase().contains(query.toLowerCase()))
+          .toList();
+    }
   }
 }

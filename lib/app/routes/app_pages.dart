@@ -7,6 +7,8 @@ import '../modules/admin/profile_admin/bindings/profile_admin_binding.dart';
 import '../modules/admin/profile_admin/views/profile_admin_view.dart';
 import '../modules/admin/views/admin_view.dart';
 import '../modules/chart/bindings/chart_binding.dart';
+import '../modules/chart/checkout/bindings/checkout_binding.dart';
+import '../modules/chart/checkout/views/checkout_view.dart';
 import '../modules/chart/views/chart_view.dart';
 import '../modules/home/bindings/home_binding.dart';
 import '../modules/home/detail_product/bindings/detail_product_binding.dart';
@@ -118,6 +120,13 @@ class AppPages {
       page: () => const ChartView(),
       binding: ChartBinding(),
       transition: Transition.fadeIn,
+      children: [
+        GetPage(
+          name: _Paths.CHECKOUT,
+          page: () => const CheckoutView(),
+          binding: CheckoutBinding(),
+        ),
+      ],
     ),
   ];
 }

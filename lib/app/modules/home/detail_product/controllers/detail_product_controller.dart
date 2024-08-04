@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../mixins/product_mixin.dart';
 
@@ -13,6 +14,7 @@ class DetailProductController extends GetxController with ProductMixin {
   late String weight;
   late String address;
   late int phone;
+  late int cityId;
 
   final count = 1.obs;
   @override
@@ -27,7 +29,16 @@ class DetailProductController extends GetxController with ProductMixin {
     category = arguments['category'];
     address = arguments['address'];
     phone = arguments['phone'];
+    cityId = arguments['cityId'];
     super.onInit();
+  }
+
+  Future<void> directMessage(int phone) async {
+    final Uri _url = Uri.parse(
+        'https://wa.me/$phone/?text=Halo%20saya%20ingin%20bertanya%20tentang%20produk%20ini');
+    if (!await launchUrl(_url)) {
+      throw Exception('Could not launch $_url');
+    }
   }
 
   @override

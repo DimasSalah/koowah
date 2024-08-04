@@ -2,11 +2,11 @@ import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:koowah/app/constant/constant.dart';
-
-import '../../controllers/profile_controller.dart'; // Ganti dengan path ke controller Anda
+import 'package:koowah/app/modules/selector/auth/controllers/auth_controller.dart';
+// Ganti dengan path ke controller Anda
 
 class CityDropdown extends StatelessWidget {
-  final ProfileController controller = Get.put(ProfileController());
+  final AuthController controller = Get.put(AuthController());
   final TextEditingController textEditingController = TextEditingController();
 
   CityDropdown({super.key}) {

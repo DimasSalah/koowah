@@ -26,7 +26,7 @@ class HeaderBar extends StatelessWidget {
           width: 50,
           height: 50,
           decoration: BoxDecoration(
-            color: CS.lavender.withOpacity(0.8),
+            color: CS.yellow.withOpacity(0.6),
             shape: BoxShape.circle,
           ),
           child: ClipOval(
@@ -63,7 +63,7 @@ class HeaderBar extends StatelessWidget {
                 ),
               );
             },
-            icon: const Icon(Icons.logout))
+            icon: SvgPicture.asset('assets/icons/logout.svg'))
       ],
     );
   }

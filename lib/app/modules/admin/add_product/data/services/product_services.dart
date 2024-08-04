@@ -13,6 +13,8 @@ import '../../../../utils/random_string.dart';
 class ProductServices extends GetxService {
   final dio = Dio();
   final logger = Logger();
+  final baseUrl = EnvConstants.baseUrl;
+  final apiKey = EnvConstants.apiKey;
 
   Future<String> uploadImage({File? image, String? fileName}) async {
     String randomName = generateRandomString(4);
@@ -71,7 +73,8 @@ class ProductServices extends GetxService {
       required String weight,
       required int phone,
       required String imageUrl,
-      required String category}) async {
+      required String category,
+      required int cityId}) async {
     try {
       final response = await dio.post(
         '$baseUrl/rest/v1/product',
@@ -85,6 +88,7 @@ class ProductServices extends GetxService {
           'phone': phone,
           'image_url': imageUrl,
           'category': category,
+          'city_id' : cityId
         },
         options: Options(
           headers: {

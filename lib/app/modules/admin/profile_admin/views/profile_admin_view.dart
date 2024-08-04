@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 import '../../../../constant/constant.dart';
 import '../../../utils/global_component/custom_form.dart';
 import '../controllers/profile_admin_controller.dart';
+import 'components/city_dropdown.dart';
 
 class ProfileAdminView extends GetView<ProfileAdminController> {
   const ProfileAdminView({Key? key}) : super(key: key);
@@ -22,23 +23,26 @@ class ProfileAdminView extends GetView<ProfileAdminController> {
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const Gap(20),
-              Container(
-                decoration: const BoxDecoration(
-                  color: CS.whiteGrey,
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(100),
-                    topRight: Radius.circular(100),
-                    bottomLeft: Radius.circular(10),
-                    bottomRight: Radius.circular(10),
+              Center(
+                child: Container(
+                  decoration: const BoxDecoration(
+                    color: CS.whiteGrey,
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(100),
+                      topRight: Radius.circular(100),
+                      bottomLeft: Radius.circular(10),
+                      bottomRight: Radius.circular(10),
+                    ),
                   ),
-                ),
-                width: Get.width * 0.6,
-                height: Get.width * 0.7,
-                child: Obx(
-                  () => SvgPicture.network(
-                      'https://api.dicebear.com/9.x/miniavs/svg?seed=${controller.name.value}'),
+                  width: Get.width * 0.6,
+                  height: Get.width * 0.7,
+                  child: Obx(
+                    () => SvgPicture.network(
+                        'https://api.dicebear.com/9.x/miniavs/svg?seed=${controller.name.value}'),
+                  ),
                 ),
               ),
               const Gap(10),
@@ -49,17 +53,21 @@ class ProfileAdminView extends GetView<ProfileAdminController> {
                   icon: 'assets/icons/profile.svg'),
               const Gap(10),
               CustomForm(
+                  hintText: 'Nomor Whatsapp',
+                  controller: controller.phoneController,
+                  keyboardType: TextInputType.number,
+                  icon: 'assets/icons/phone.svg'),
+              const Gap(10),
+              CustomForm(
                   hintText: 'Alamat',
                   icon: 'assets/icons/location.svg',
                   controller: controller.addressController),
               const Gap(10),
-              CustomForm(
-                  hintText: 'Nomor Whatsapp',
-                  controller: controller.phoneController,
-                  keyboardType: TextInputType.number,
-                  // onChanged: controller.changePhone,
-
-                  icon: 'assets/icons/phone.svg'),
+              Obx(
+                () => controller.cities.isEmpty
+                    ? const Center(child: CircularProgressIndicator())
+                    : CityDropdown(),
+              ),
               const Gap(20),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(

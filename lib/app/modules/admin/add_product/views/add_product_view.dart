@@ -18,7 +18,7 @@ class AddProductView extends GetView<AddProductController> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: const Text('AddProductView'),
+        title: Text('Tambah Produk', style: TS.regular),
         centerTitle: true,
       ),
       body: Padding(
@@ -39,12 +39,14 @@ class AddProductView extends GetView<AddProductController> {
                   keyboardType: TextInputType.phone,
                   onChanged: controller.priceOnChange,
                 )),
-                Gap(10),
+                const Gap(10),
                 Expanded(
-                    child: CustomForm2(
-                  hintText: 'Berat',
-                  onChanged: controller.weightOnChange,
-                )),
+                  child: CustomForm2(
+                    hintText: 'Berat gram',
+                    onChanged: controller.weightOnChange,
+                    keyboardType: TextInputType.number,
+                  ),
+                ),
               ],
             ),
             const Gap(10),

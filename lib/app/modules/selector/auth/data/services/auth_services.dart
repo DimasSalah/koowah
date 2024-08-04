@@ -11,6 +11,9 @@ import '../../../../../routes/app_pages.dart';
 class AuthServices extends GetxService {
   final dio = Dio();
   final logger = Logger();
+  final baseUrl = EnvConstants.baseUrl;
+  final apiKey = EnvConstants.apiKey;
+  final apiRJO = EnvConstants.apiRJO;
 
   Future<Response> signIn(String email, String password) async {
     try {
@@ -40,7 +43,7 @@ class AuthServices extends GetxService {
   }
 
   Future<Response> register(String userId, String name, String address,
-      int phone, String image) async {
+      int phone, String image, int city) async {
     try {
       final response = await dio.post(
         '$baseUrl/rest/v1/admin',
@@ -50,6 +53,7 @@ class AuthServices extends GetxService {
           'address': address,
           'phone': phone,
           'image': image,
+          'city': city,
         },
         options: Options(
           headers: {
@@ -70,7 +74,7 @@ class AuthServices extends GetxService {
     }
   }
 
-  Future<AdminModel>  getAdmin(String id) async {
+  Future<AdminModel> getAdmin(String id) async {
     try {
       final response = await dio.get(
         '$baseUrl/rest/v1/admin?id=eq.$id',
@@ -93,6 +97,7 @@ class AuthServices extends GetxService {
         phone: 0,
         createdAt: '',
         image: '',
+        cityId: 0,
       );
     } catch (e) {
       logger.e(e);
@@ -135,7 +140,6 @@ class AuthServices extends GetxService {
 
   Future<void> updateProfile(
       String id, String name, String address, int phone, String image) async {
-        
     try {
       final response = await dio.patch(
         '$baseUrl/rest/v1/admin?id=eq.$id',

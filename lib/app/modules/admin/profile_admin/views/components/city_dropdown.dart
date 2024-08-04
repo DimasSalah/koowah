@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:koowah/app/constant/constant.dart';
 
-import '../../controllers/profile_controller.dart'; // Ganti dengan path ke controller Anda
+import '../../controllers/profile_admin_controller.dart';
 
 class CityDropdown extends StatelessWidget {
-  final ProfileController controller = Get.put(ProfileController());
+  final ProfileAdminController controller = Get.put(ProfileAdminController());
   final TextEditingController textEditingController = TextEditingController();
 
   CityDropdown({super.key}) {
@@ -18,6 +18,7 @@ class CityDropdown extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    //#region
     List<String> cityNames =
         controller.filteredCities.map((city) => city.cityName).toList();
     cityNames = cityNames.toSet().toList();
@@ -28,6 +29,7 @@ class CityDropdown extends StatelessWidget {
         child: Text(cityName),
       );
     }).toList();
+    //#endregion
 
     return DropdownButtonHideUnderline(
       child: Obx(() {

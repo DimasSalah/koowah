@@ -24,12 +24,17 @@ class ProfileController extends GetxController {
   }
 
   void goHome() {
-    GetStorage().write('session', true);
-    GetStorage().write('name', name.value);
-    GetStorage().write('address', address.value);
-    GetStorage().write('cityId', selectedCityId.value);
-    print(selectedCityId.value);
-    Get.offAllNamed(Routes.NAVIGATION);
+    if (name.value.isNotEmpty &&
+        address.value.isNotEmpty &&
+        selectedCityId.value != 0) {
+      GetStorage().write('session', true);
+      GetStorage().write('name', name.value);
+      GetStorage().write('address', address.value);
+      GetStorage().write('cityId', selectedCityId.value);
+      Get.offAllNamed(Routes.NAVIGATION);
+    } else {
+      Get.snackbar('Error', 'Nama dan alamat tidak boleh kosong');
+    }
   }
 
   @override
@@ -45,10 +50,7 @@ class ProfileController extends GetxController {
     cities.value = (data['rajaongkir']['results'] as List)
         .map((city) => CityModel.fromJson(city))
         .toList();
-    filteredCities.value = cities; // Initialize with all cities
-    Future.delayed(Duration(seconds: 3), () {
-      update();
-    });
+    filteredCities.value = cities;
   }
 
   void searchCity(String query) {
