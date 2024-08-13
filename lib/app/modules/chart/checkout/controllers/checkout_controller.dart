@@ -49,11 +49,13 @@ class CheckoutController extends GetxController {
   }
 
   Future getShippingCost() async {
+    final weight = int.parse(weightProduct);
+    String multiplesWeight = (weight * countOrder).toString();
     try {
       final response = await ShippingServices().getShippingCourier(
         originCity,
         cityId,
-        weightProduct,
+        multiplesWeight,
         selectedShippingOption.value.toLowerCase(),
       );
       shippingCost.value = response.rajaongkir.results[0].costs;

@@ -76,6 +76,17 @@ class AddProductController extends GetxController {
   }
 
   Future<void> addProduct() async {
+    // print('id: $id');
+    // print('title: ${productName.value}');
+    // print('description: ${description.value}');
+    // print('price: ${price.value}');
+    // print('address: ${adminAddress.value}');
+    // print('adminId: $id');
+    // print('weight: ${weight.value}');
+    // print('phone: $adminPhone');
+    // print('imageUrl: ${imageUrl.value}');
+    // print('category: ${category.value}');
+    // print('cityId: $adminCity');
     Get.dialog(
       AlertDialog(
         backgroundColor: CS.white,

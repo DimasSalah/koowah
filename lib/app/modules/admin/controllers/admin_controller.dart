@@ -46,6 +46,7 @@ class AdminController extends GetxController {
   @override
   void onReady() {
     fetchAdmin(id);
+    print('id: $id');
     fetchAllProduct();
     adminId.value = id;
     super.onReady();

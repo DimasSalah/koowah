@@ -70,7 +70,8 @@ class CheckoutView extends GetView<CheckoutController> {
                       ),
                       Text(
                         'Berat : ${formatWeight(
-                          int.parse(controller.weightProduct),
+                          int.parse(controller.weightProduct) *
+                              controller.countOrder,
                         )}',
                         style:
                             TS.regular.copyWith(fontSize: 13, color: CS.grey),

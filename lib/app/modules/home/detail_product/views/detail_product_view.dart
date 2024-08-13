@@ -38,9 +38,14 @@ class DetailProductView extends GetView<DetailProductController> {
               children: [
                 Row(
                   children: [
-                    Text(
-                      controller.title,
-                      style: TS.medium.copyWith(fontSize: 24),
+                    Container(
+                      constraints: const BoxConstraints(maxWidth: 300),
+                      child: Text(
+                        controller.title,
+                        style: TS.medium.copyWith(fontSize: 24),
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 2,
+                      ),
                     ),
                     const Spacer(),
                     GestureDetector(
